@@ -1,10 +1,13 @@
 // Implementatie van klasse Stand.
 
+#include "stand.h"
 #include <iostream>
 #include <iomanip>
-#include "stand.h"
+
 #include "standaard.h"
 using namespace std;
+
+#define RL 12;
 
 //*************************************************************************
 
@@ -18,9 +21,9 @@ Stand::Stand()
 
 Stand::Stand (int waardeM, int waardeN)
 {
-  cout << "Constructor is nog niet geimplementeerd." << endl;
-  // TODO: implementeren
-
+	m = waardeM;
+	n = waardeN;
+	init_board();
 }
 
 //*************************************************************************
@@ -48,21 +51,30 @@ int Stand::getN ()
 //*************************************************************************
 
 void Stand::drukaf ()
-{ 
-  cout << "Methode drukaf is nog niet geimplementeerd." << endl;
-  // TODO: implementeren
-
+{
+	for(int i = 0; i < getM(); i++){
+		for(int t = 0; t < getM(); t++){
+		cout << "---";
+		}
+		cout << endl;
+		for(int j = 0; j < getN(); j++){
+			if(bord[i][j] > 0){	cout << "|" << bord[i][j] << "|";}
+			else{ cout << "|" << " " << "|";}
+		}
+		cout << endl;
+	}
+	for(int t = 0; t < getM(); t++){
+	cout << "---";
+	}
+	cout << endl;
 }  // drukaf
 
 //*************************************************************************
 
 bool Stand::legsteenneer (int rij, int kolom, int steennr)
 {
-  cout << "Methode legsteenneer is nog niet geimplementeerd." << endl;
-  // TODO: implementeren
 
-  return true;
-
+	return true;
 }  // legsteenneer
 
 //*************************************************************************
@@ -112,4 +124,14 @@ bool Stand::goedezet (int &grij, int &gkolom, int &gsteennr)
   return true;
 
 }  // goedezet
+
+void Stand::init_board(){
+	for(int i = 0; i < getM(); i++){
+		for(int j = 0; j < getN(); j++){
+			bord[i][j] = 0;
+		}
+	}
+
+
+}
 
