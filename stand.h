@@ -68,6 +68,10 @@ class Stand
     int m, n,     // aantal rijen/kolommen van het bord
         bord[Mmax][Nmax];
 
+    void init_board ();
+
+    bool isOccupied(int rij, int kolom, int steennr);
+
   // TODO: uw eigen methodes en velden
 
 };
