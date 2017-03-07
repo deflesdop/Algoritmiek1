@@ -1,23 +1,0 @@
-
-*** Modified files in JOE when it aborted on Tue Mar  7 14:42:05 2017
-*** JOE was aborted because the terminal closed
-
-*** File '.git/COMMIT_EDITMSG'
-
-# Please enter the commit message for your changes. Lines starting
-# with '#' will be ignored, and an empty message aborts the commit.
-#
-# Committer: M. de Jong <s1821784@leidenuniv.nl>
-#
-# On branch master
-#
-# Initial commit
-#
-# Changes to be committed:
-#   (use "git rm --cached <file>..." to unstage)
-#
-#	new file:   Makefile
-#	new file:   main
-
-
-.jhgdsws 
