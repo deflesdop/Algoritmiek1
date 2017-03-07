@@ -7,7 +7,7 @@
 #include "standaard.h"
 using namespace std;
 
-#define RL 12;
+#define RB 12;
 
 //*************************************************************************
 
@@ -23,6 +23,7 @@ Stand::Stand (int waardeM, int waardeN)
 {
 	m = waardeM;
 	n = waardeN;
+	zetnr = 1;
 	init_board();
 }
 
@@ -48,10 +49,29 @@ int Stand::getN ()
   return n;
 }
 
+int Stand::getZetnr ()
+{
+  return zetnr;
+}
+
+void Stand::setZetnr (int nr)
+{
+  zetnr = nr;
+}
+
+void Stand::incZetnr ()
+{
+  zetnr++;
+}
+
 //*************************************************************************
 
 void Stand::drukaf ()
 {
+    for(int i = 0; i < getM(); i++){
+        cout << " " << i << " "; 
+    }
+    cout << endl;
 	for(int i = 0; i < getM(); i++){
 		for(int t = 0; t < getM(); t++){
 		cout << "---";
@@ -61,7 +81,7 @@ void Stand::drukaf ()
 			if(bord[i][j] > 0){	cout << "|" << bord[i][j] << "|";}
 			else{ cout << "|" << " " << "|";}
 		}
-		cout << endl;
+		cout << " " << i << endl;
 	}
 	for(int t = 0; t < getM(); t++){
 	cout << "---";
@@ -70,30 +90,118 @@ void Stand::drukaf ()
 }  // drukaf
 
 //*************************************************************************
-
-bool Stand::legsteenneer (int rij, int kolom, int steennr)
+bool Stand::steenmogelijk(int rij, int kolom, int steennr)
 {
-
-	return true;
+    switch(steennr){
+    case 0:
+        if(bord[rij][kolom] == 0&&
+        bord[rij+1][kolom] == 0 &&
+        bord[rij][kolom+1] == 0){
+        return true;
+        }
+    break;
+    case 1:
+        if(bord[rij][kolom] == 0&&
+        bord[rij+1][kolom] == 0 &&
+        bord[rij+1][kolom+1] == 0){
+        return true;
+        }
+    break;
+    case 2:
+        if(bord[rij+1][kolom] == 0&&
+        bord[rij][kolom+1] == 0 &&
+        bord[rij+1][kolom+1] == 0){
+        return true;
+        }
+    break;
+    case 3:
+        if(bord[rij][kolom] == 0&&
+        bord[rij][kolom+1] == 0 &&
+        bord[rij+1][kolom+1] == 0){
+        return true;
+        }
+    break;
+    }
+    return false;
+}
+bool Stand::legsteenneer (int rij, int kolom, int steennr)
+{   
+    if(steennr >= 0 && rij >=0 && kolom >= 0 && rij < getM()-1 && kolom < getN()-1 && steennr < 4 ){ 
+        if(steenmogelijk(rij, kolom, steennr)){
+            switch(steennr){
+            case 0:
+                bord[rij][kolom] = zetnr;
+                bord[rij+1][kolom] = zetnr;
+                bord[rij][kolom+1] = zetnr;
+            break;
+            case 1:
+                bord[rij][kolom] = zetnr;
+                bord[rij+1][kolom] = zetnr;
+                bord[rij+1][kolom+1] = zetnr;
+            break;
+            case 2:
+                bord[rij+1][kolom] = zetnr;
+                bord[rij][kolom+1] = zetnr;
+                bord[rij+1][kolom+1] = zetnr;
+            break;
+            case 3:
+                bord[rij][kolom] = zetnr;
+                bord[rij][kolom+1] = zetnr;
+                bord[rij+1][kolom+1] = zetnr;
+            break;
+            }
+            incZetnr();
+            return true;
+        }
+        cout << "zet niet mogelijk" << endl; 
+        return false;
+    }
+    return false;
+	
 }  // legsteenneer
 
 //*************************************************************************
 
 bool Stand::eindstand ()
 {
-  cout << "Methode eindstand is nog niet geimplementeerd." << endl;
-  // TODO: implementeren
-
-  return false;
+  for(int i = 0; i< getM()-1; i++){
+    for(int j = 0; j< getN()-1; j++){
+        for(int k = 0; k < 4; k++){
+            if(steenmogelijk(i, j, k)){
+            return false;
+            }
+        }
+    }
+  }
+  return true;
 
 }  // eindstand
 
 //*************************************************************************
-
+int Stand::aantalmogelijkeZetten(int temp[][3]){
+    int counter = 0;
+    for(int i = 0; i< getM()-1; i++){
+        for(int j = 0; j< getN()-1; j++){
+            for(int k = 0; k < 4; k++){
+                if(steenmogelijk(i, j, k)){
+                temp[counter][0] = i;
+                temp[counter][1] = j;
+                temp[counter][2] = k;
+                counter++;
+                }
+            }
+        }
+  }
+  
+  return counter;
+}
 void Stand::doerandomzet ()
 {
-  cout << "Methode doerandomzet is nog niet geimplementeerd." << endl;
-  // TODO: implementeren
+  int mogelijkezet[1500][3];
+  int aantalzet = aantalmogelijkeZetten(mogelijkezet);
+  int random = randomGetal(0, aantalzet-1);
+  legsteenneer(mogelijkezet[random][0], mogelijkezet[random][1], mogelijkezet[random][2]);
+  
 
 }  // doerandomzet
 
@@ -101,13 +209,14 @@ void Stand::doerandomzet ()
 
 bool Stand::winnend (int &aantal, int &wrij, int &wkolom, int &wsteennr)
 {
-  cout << "Methode winnend is nog niet geimplementeerd." << endl;
-  // TODO: implementeren
-
+    
+    
   wrij = 0;
   wkolom = 0;
   wsteennr = 0;
-  return true;
+    
+    return true;
+
 
 }  // winnend
 

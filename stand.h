@@ -22,6 +22,10 @@ class Stand
     int getM ();
     // Geef waarde van n.
     int getN ();
+    
+    int getZetnr();
+    
+    void setZetnr(int nr);
 
     // Druk bord af op het scherm.
     void drukaf ();
@@ -31,6 +35,7 @@ class Stand
     // Retourneer:
     //   - true, als het lukt om de steen neer te leggen
     //   - false, als het niet lukt om de steen neer te leggen
+    
     bool legsteenneer (int rij, int kolom, int steennr);
 
     // Controleer of huidige stand een eindstand is.
@@ -65,12 +70,16 @@ class Stand
     bool goedezet (int &grij, int &gkolom, int &gsteennr);
 
   private:
-    int m, n,     // aantal rijen/kolommen van het bord
+    int m, n, zetnr,    // aantal rijen/kolommen van het bord
         bord[Mmax][Nmax];
 
     void init_board ();
 
-    bool isOccupied(int rij, int kolom, int steennr);
+    bool steenmogelijk(int rij, int kolom, int steennr);
+    
+    int aantalmogelijkeZetten(int temp[][3]);
+    
+    void incZetnr();
 
   // TODO: uw eigen methodes en velden
 

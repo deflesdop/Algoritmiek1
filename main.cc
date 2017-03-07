@@ -126,7 +126,7 @@ void doespel (Stand *s1)
               cin >> kolom;
               cout << "Geef het nummer van een steen: ";
               cin >> steennr;
-
+              
               if (s1->legsteenneer (rij, kolom, steennr))
               { s1 -> drukaf ();
                 if (!s1->eindstand())
