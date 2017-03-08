@@ -207,18 +207,151 @@ void Stand::doerandomzet ()
 
 //*************************************************************************
 
-bool Stand::winnend (int &aantal, int &wrij, int &wkolom, int &wsteennr)
+int Stand::wAantalmogelijkeZetten(int temp[][3], int stand[][Nmax]){
+    int counter = 0;
+    for(int i = 0; i< getM()-1; i++){
+        for(int j = 0; j< getN()-1; j++){
+            for(int k = 0; k < 4; k++){
+                if(wSteenmogelijk(i, j, k, stand)){
+                temp[counter][0] = i;
+                temp[counter][1] = j;
+                temp[counter][2] = k;
+                counter++;
+                }
+            }
+        }
+  }
+  
+  return counter;
+}
+
+bool Stand::wEindstand (int stand[][Nmax])
 {
-    
-    
-  wrij = 0;
-  wkolom = 0;
-  wsteennr = 0;
-    
-    return true;
+  for(int i = 0; i< getM()-1; i++){
+    for(int j = 0; j< getN()-1; j++){
+        for(int k = 0; k < 4; k++){
+            if(wSteenmogelijk(i, j, k, stand)){
+            return false;
+            }
+        }
+    }
+  }
+  return true;
+
+}  // eindstand
+
+bool Stand::wSteenmogelijk(int rij, int kolom, int steennr, int bord[][Nmax])
+{
+    switch(steennr){
+    case 0:
+        if(bord[rij][kolom] == 0&&
+        bord[rij+1][kolom] == 0 &&
+        bord[rij][kolom+1] == 0){
+        return true;
+        }
+    break;
+    case 1:
+        if(bord[rij][kolom] == 0&&
+        bord[rij+1][kolom] == 0 &&
+        bord[rij+1][kolom+1] == 0){
+        return true;
+        }
+    break;
+    case 2:
+        if(bord[rij+1][kolom] == 0&&
+        bord[rij][kolom+1] == 0 &&
+        bord[rij+1][kolom+1] == 0){
+        return true;
+        }
+    break;
+    case 3:
+        if(bord[rij][kolom] == 0&&
+        bord[rij][kolom+1] == 0 &&
+        bord[rij+1][kolom+1] == 0){
+        return true;
+        }
+    break;
+    }
+    return false;
+}
+
+bool Stand::doeZet (int rij, int kolom, int steennr, int stand[][Nmax])
+{   
+    if(steennr >= 0 && rij >=0 && kolom >= 0 && rij < getM()-1 && kolom < getN()-1 && steennr < 4 ){ 
+        if(wSteenmogelijk(rij, kolom, steennr, stand)){
+            switch(steennr){
+            case 0:
+                bord[rij][kolom] = zetnr;
+                bord[rij+1][kolom] = zetnr; 
+                bord[rij][kolom+1] = zetnr;
+            break;
+            case 1:
+                bord[rij][kolom] = zetnr;
+                bord[rij+1][kolom] = zetnr;
+                bord[rij+1][kolom+1] = zetnr;
+            break;
+            case 2:
+                bord[rij+1][kolom] = zetnr;
+                bord[rij][kolom+1] = zetnr;
+                bord[rij+1][kolom+1] = zetnr;
+            break;
+            case 3:
+                bord[rij][kolom] = zetnr;
+                bord[rij][kolom+1] = zetnr;
+                bord[rij+1][kolom+1] = zetnr;
+            break;
+            }
+            incZetnr();
+            return true;
+        } 
+        return false;
+    }
+    return false;
+	
+}  // legsteenneer
+
+void Stand::copyBord(int a1[][Nmax], int a2[][Nmax]){
+	for(int i = 0; i < getM(); i++){
+		for(int j = 0; j < getN(); j++){
+			a2[i][j] = a1[i][j];
+		}
+	}
+	
+}
 
 
+bool Stand::win (int &aantal, int &wrij, int &wkolom, int &wsteennr, int stand[][Nmax], int mogelijkzet[][3], int kopie[][Nmax])
+{
+    if(wEindstand(stand)){
+    	return false;
+    }
+    else{
+    	for(int i = 0; i < wAantalmogelijkeZetten(mogelijkzet, stand); i++){
+    		doeZet(mogelijkzet[i][0], mogelijkzet[i][1], mogelijkzet[i][2], stand);
+    		drukaf();
+    		if(!win(aantal, wrij, wkolom, wsteennr, stand, mogelijkzet, kopie)){
+    			copyBord(kopie, stand);
+    			wrij = mogelijkzet[i][0];
+    			wkolom = mogelijkzet[i][1];
+    			wsteennr = mogelijkzet[i][2];
+    			return true;
+    		}
+    		else{
+    			aantal++;
+    			copyBord(kopie, stand);
+    		}
+    	}
+    }
+    return false;
 }  // winnend
+
+bool Stand::winnend (int &aantal, int &wrij, int &wkolom, int &wsteennr){
+	int mogelijkzet[1500][3];
+	int kopie[Mmax][Nmax];
+	copyBord(bord,kopie);
+	return win(aantal, wrij, wkolom, wsteennr, bord, mogelijkzet, kopie);	
+}
+
 
 //*************************************************************************
 

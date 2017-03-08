@@ -80,9 +80,21 @@ class Stand
     int aantalmogelijkeZetten(int temp[][3]);
     
     void incZetnr();
+    
+    int wAantalmogelijkeZetten(int temp[][3], int stand[][Nmax]);
+    
+    bool wEindstand (int stand[][Nmax]);
+    
+    bool wSteenmogelijk(int rij, int kolom, int steennr, int bord[][Nmax]);
+    
+    void copyBord(int a1[][Nmax], int a2[][Nmax]);
+    
+    bool doeZet (int rij, int kolom, int steennr, int stand[][Nmax]);
+    
+    bool win(int &aantal, int &wrij, int &wkolom, int &wsteennr, int stand[][Nmax], int temp[][3], int kopie[][Nmax]);
 
   // TODO: uw eigen methodes en velden
-
+ 
 };
 
 #endif
