@@ -75,23 +75,19 @@ class Stand
 
     void init_board ();
 
-    bool steenmogelijk(int rij, int kolom, int steennr);
+    bool steenmogelijk(int rij, int kolom, int steennr, int stand[][Nmax]);
     
-    int aantalmogelijkeZetten(int temp[][3]);
+    int aantalmogelijkeZetten(int temp[][3], int stand[][Nmax]);
     
     void incZetnr();
     
-    int wAantalmogelijkeZetten(int temp[][3], int stand[][Nmax]);
+    void undoZet(int rij, int kolom, int steennr, int stand[][Nmax]);
     
-    bool wEindstand (int stand[][Nmax]);
+    bool huidigeEindstand (int stand[][Nmax]);
     
-    bool wSteenmogelijk(int rij, int kolom, int steennr, int bord[][Nmax]);
+    bool doeZet (int rij, int kolom, int steennr, int stand[][Nmax], int zetnr);
     
-    void copyBord(int a1[][Nmax], int a2[][Nmax]);
-    
-    bool doeZet (int rij, int kolom, int steennr, int stand[][Nmax]);
-    
-    bool win(int &aantal, int &wrij, int &wkolom, int &wsteennr, int stand[][Nmax], int temp[][3], int kopie[][Nmax]);
+    bool win(int &aantal, int &wrij, int &wkolom, int &wsteennr, int stand[][Nmax]);
 
   // TODO: uw eigen methodes en velden
  
