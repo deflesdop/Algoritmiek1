@@ -14,6 +14,7 @@
 #include <iostream>
 #include "standaard.h"
 #include "stand.h"
+#include <ctime>
 using namespace std;
 
 //*************************************************************************
@@ -165,10 +166,42 @@ void doespel (Stand *s1)
 //*************************************************************************
 
 // Voert de experimenten uit zoals beschreven op blz 4 van de opdracht.
-void doeexperimenten ()
+void doeexperimenten (Stand *s1)
 {
-  cout << "Functie doeexperimenten is nog niet geimplementeerd." << endl;
-  // TODO: implementeren
+	clock_t t;
+	bool win;
+	int m(2), n(m), aantal(0), wrij, wkolom, wzetnr;
+	float verhouding(-1);
+	for(m = 2; m <= 5; m++){
+		for(n = m; n <= 10; n++){
+			s1 = new Stand(m,n);
+			t = clock();
+			win = s1->winnend(aantal, wrij ,wkolom ,wzetnr);
+			t = clock() - t;
+			if(win){
+				cout << "Win op (" << m << "," << n << ") met " << aantal << " standen bekeken";
+				cout << " met een duratie van: " << ((double) t / CLOCKS_PER_SEC) << " secondes,";
+				cout << " winnende zet is (" << wrij << "," << wkolom << "," << wzetnr << ")" << endl;
+				
+				
+				if((m==4 && n==7) || (m==5 && n==6)){ break;}
+			}
+			else{ 	
+				wrij = 0;
+				wkolom = 0;
+				wzetnr = 0;
+				s1 -> goedezetEX(wrij, wkolom, wzetnr, verhouding);
+				cout << "Geen win op (" << m << "," << n << ") met " << aantal << " standen bekeken";
+				cout << " met een duratie van: " << ((double) t / CLOCKS_PER_SEC) << " secondes,";
+				cout << "  maar goede zet is (" << wrij << "," << wkolom << "," << wzetnr << ")";
+				cout << "  met kans op winnen: " << verhouding << endl;
+			}
+			verhouding = -1;
+			aantal = 0;
+	  }
+		if(m==5){break;}
+  }
+	//cout << count << endl;
       
 }  // doeexperimenten
 
@@ -205,7 +238,7 @@ void hoofdmenu ()
                 delete s1;  // netjes opruimen
               }
               break;
-      case 2: doeexperimenten ();
+      case 2: doeexperimenten (s1);
               break;
       case 3: break;
       default: cout << endl;

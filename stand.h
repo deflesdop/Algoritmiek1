@@ -68,6 +68,8 @@ class Stand
     //   - false, als er geen zet meer mogelijk is, d.w.z. als
     //     de huidige stand een eindstand is.
     bool goedezet (int &grij, int &gkolom, int &gsteennr);
+    
+    void goedezetEX(int &grij, int &gkolom, int &gsteennr, float &hoogste);
 
   private:
     int m, n, zetnr,    // aantal rijen/kolommen van het bord
@@ -88,6 +90,8 @@ class Stand
     bool doeZet (int rij, int kolom, int steennr, int stand[][Nmax], int zetnr);
     
     bool win(int &aantal, int &wrij, int &wkolom, int &wsteennr, int stand[][Nmax]);
+    
+    void telwinnend(float & totaal, float & gewonnen, bool aanzet);
 
   // TODO: uw eigen methodes en velden
  

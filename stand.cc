@@ -7,8 +7,6 @@
 #include "standaard.h"
 using namespace std;
 
-#define RB 12;
-
 //*************************************************************************
 
 Stand::Stand()
@@ -68,7 +66,7 @@ void Stand::incZetnr ()
 
 void Stand::drukaf ()
 {
-    for(int i = 0; i < getM(); i++){
+    for(int i = 0; i < getN(); i++){
         cout << " " << i << " "; 
     }
     cout << endl;
@@ -102,7 +100,7 @@ bool Stand::steenmogelijk(int rij, int kolom, int steennr, int bord[][Nmax])
     break;
     case 1:
         if(bord[rij][kolom] == 0&&
-        bord[rij+1][kolom] == 0 &&
+        bord[rij][kolom+1] == 0 &&
         bord[rij+1][kolom+1] == 0){
         return true;
         }
@@ -116,7 +114,7 @@ bool Stand::steenmogelijk(int rij, int kolom, int steennr, int bord[][Nmax])
     break;
     case 3:
         if(bord[rij][kolom] == 0&&
-        bord[rij][kolom+1] == 0 &&
+        bord[rij+1][kolom] == 0 &&
         bord[rij+1][kolom+1] == 0){
         return true;
         }
@@ -137,7 +135,7 @@ bool Stand::doeZet (int rij, int kolom, int steennr, int bord[][Nmax], int zetnr
             break;
             case 1:
                 bord[rij][kolom] = zetnr;
-                bord[rij+1][kolom] = zetnr;
+                bord[rij][kolom+1] = zetnr;
                 bord[rij+1][kolom+1] = zetnr;
             break;
             case 2:
@@ -147,7 +145,7 @@ bool Stand::doeZet (int rij, int kolom, int steennr, int bord[][Nmax], int zetnr
             break;
             case 3:
                 bord[rij][kolom] = zetnr;
-                bord[rij][kolom+1] = zetnr;
+                bord[rij+1][kolom] = zetnr;
                 bord[rij+1][kolom+1] = zetnr;
             break;
             }
@@ -244,8 +242,8 @@ bool Stand::win (int &aantal, int &wrij, int &wkolom, int &wsteennr, int stand[]
     			undoZet(mogelijkzet[i][0], mogelijkzet[i][1], mogelijkzet[i][2], bord);
     		}
     	}
+    	return false;
     }
-    return false;
 }  // winnend
 
 bool Stand::winnend (int &aantal, int &wrij, int &wkolom, int &wsteennr){
@@ -258,17 +256,93 @@ bool Stand::winnend (int &aantal, int &wrij, int &wkolom, int &wsteennr){
 
 //*************************************************************************
 
-bool Stand::goedezet (int &grij, int &gkolom, int &gsteennr)
-{
-  cout << "Methode goedezet is nog niet geimplementeerd." << endl;
-  // TODO: implementeren
+void Stand::telwinnend(float & totaal, float & gewonnen, bool aanzet){
+	
+	int mogelijkzet[1500][3];
+	if(eindstand()){
+		totaal = 1;
+		gewonnen = aanzet ? 1 : 0;
+	}
+	else{
+		for(int i = 0; i < aantalmogelijkeZetten(mogelijkzet, bord); i++){
+			doeZet(mogelijkzet[i][0], mogelijkzet[i][1], mogelijkzet[i][2], bord, getZetnr());
+			
+			float temptotaal, tempgewonnen;
+			telwinnend(temptotaal, tempgewonnen, !aanzet);
 
-  grij = 0;
-  gkolom = 0;
-  gsteennr = 0;
-  return true;
+			totaal += temptotaal;
+			gewonnen += tempgewonnen;
+			undoZet(mogelijkzet[i][0], mogelijkzet[i][1], mogelijkzet[i][2], bord);
+		}		
+	}
+}
 
-}  // goedezet
+
+
+
+bool Stand::goedezet(int &grij, int &gkolom, int &gsteennr)
+{	float totaal, gewonnen;
+	int zetnum = getZetnr();
+
+	float verhouding, hoogste;
+	int mogelijkzet[1500][3]
+						  ;
+	for(int i = 0; i < aantalmogelijkeZetten(mogelijkzet, bord); i++){
+			doeZet(mogelijkzet[i][0], mogelijkzet[i][1], mogelijkzet[i][2], bord, getZetnr());
+			totaal = 0;
+			gewonnen = 0;
+			telwinnend(totaal, gewonnen, true);
+			undoZet(mogelijkzet[i][0], mogelijkzet[i][1], mogelijkzet[i][2], bord);
+						
+			verhouding = (float)gewonnen / (float)totaal;
+			
+			if(verhouding > hoogste){
+				hoogste = verhouding;
+				grij = mogelijkzet[i][0];
+				gkolom = mogelijkzet[i][1];
+				gsteennr = mogelijkzet[i][2];	
+			}
+			if(verhouding == 0){
+				grij = 0;
+				gkolom = 0;
+				gsteennr = 0;
+			}
+	}
+	setZetnr(zetnum);
+	return false;
+}  // goedezetint
+
+
+
+void Stand::goedezetEX(int &grij, int &gkolom, int &gsteennr, float &hoogste){
+	float totaal, gewonnen;
+	int zetnum = getZetnr();
+		float verhouding;
+		int mogelijkzet[1500][3]
+							  ;
+		for(int i = 0; i < aantalmogelijkeZetten(mogelijkzet, bord); i++){
+				doeZet(mogelijkzet[i][0], mogelijkzet[i][1], mogelijkzet[i][2], bord, getZetnr());
+				totaal = 0;
+				gewonnen = 0;
+				telwinnend(totaal, gewonnen, true);
+				undoZet(mogelijkzet[i][0], mogelijkzet[i][1], mogelijkzet[i][2], bord);
+							
+				verhouding = (float)gewonnen / (float)totaal;
+
+				if(verhouding > hoogste){
+					hoogste = verhouding;
+					grij = mogelijkzet[i][0];
+					gkolom = mogelijkzet[i][1];
+					gsteennr = mogelijkzet[i][2];
+				}
+				if(verhouding == 0){
+					grij = 0;
+					gkolom = 0;
+					gsteennr = 0;
+				}
+		}
+		setZetnr(zetnum);
+}
 
 void Stand::init_board(){
 	for(int i = 0; i < getM(); i++){
