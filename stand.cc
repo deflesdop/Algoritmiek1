@@ -34,24 +34,24 @@ Stand::~Stand ()
 }  // ~Stand
 
 //*************************************************************************
-
+// return M
 int Stand::getM ()
 {
   return m;
 }
 
 //*************************************************************************
-
+// return N
 int Stand::getN ()
 {
   return n;
 }
-
+// return zetnr
 int Stand::getZetnr ()
 {
   return zetnr;
 }
-
+// 
 void Stand::setZetnr (int nr)
 {
   zetnr = nr;

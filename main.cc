@@ -179,10 +179,12 @@ void doeexperimenten (Stand *s1)
 			win = s1->winnend(aantal, wrij ,wkolom ,wzetnr);
 			t = clock() - t;
 			if(win){
-				cout << "Win op (" << m << "," << n << ") met " << aantal << " standen bekeken";
-				cout << " met een duratie van: " << ((double) t / CLOCKS_PER_SEC) << " secondes,";
-				cout << " winnende zet is (" << wrij << "," << wkolom << "," << wzetnr << ")" << endl;
-				
+				cout << "Win op (" << m << "," << n << ") met " ;
+				cout << aantal << " standen bekeken";
+				cout << " met een duratie van: " ;
+				cout << ((double) t / CLOCKS_PER_SEC) << " secondes,";
+				cout << " winnende zet is (" << wrij << "," << wkolom; 
+				cout << "," << wzetnr << ")" << endl;
 				
 				if((m==4 && n==7) || (m==5 && n==6)){ break;}
 			}
@@ -191,9 +193,12 @@ void doeexperimenten (Stand *s1)
 				wkolom = 0;
 				wzetnr = 0;
 				s1 -> goedezetEX(wrij, wkolom, wzetnr, verhouding);
-				cout << "Geen win op (" << m << "," << n << ") met " << aantal << " standen bekeken";
-				cout << " met een duratie van: " << ((double) t / CLOCKS_PER_SEC) << " secondes,";
-				cout << "  maar goede zet is (" << wrij << "," << wkolom << "," << wzetnr << ")";
+				cout << "Geen win op (" << m << "," << n << ") met "; 
+				cout << aantal << " standen bekeken";
+				cout << " met een duratie van: " ;
+				cout << ((double) t / CLOCKS_PER_SEC) << " secondes,";
+				cout << "  maar goede zet is (" << wrij << "," ;
+				cout << wkolom << "," << wzetnr << ")";
 				cout << "  met kans op winnen: " << verhouding << endl;
 			}
 			verhouding = -1;
