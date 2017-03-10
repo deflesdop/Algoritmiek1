@@ -7,9 +7,9 @@
 //   of een goede zet
 // * experimenten te doen
 //
-// Naam 1 (studentnummer 1)
-// Naam 2 (studentnummer 2)
-// Datum
+// Andrew Huang (s1913999)
+// Micha de Jong (s1821784)
+// 10-03-2017
 
 #include <iostream>
 #include "standaard.h"
@@ -206,8 +206,14 @@ void doeexperimenten (Stand *s1)
 	  }
 		if(m==5){break;}
   }
-	//cout << count << endl;
-      
+void infoblokje(){
+    cout << "--------------------------------------------------------"<< endl;
+    cout << "Andrew Huang(s1913999) & Micha de Jong(s1821784)." << endl;
+    cout << "Studenten aan de Universiteit Leiden."<< endl;
+    cout << "In dit programma kan je het spel stenen leggen spelen." << endl;
+    cout << "Ook kan je diverse experimenten uitvoeren." << endl;
+    cout << "--------------------------------------------------------"<< endl;
+  }  
 }  // doeexperimenten
 
 //*************************************************************************
@@ -217,7 +223,7 @@ void hoofdmenu ()
               // en weer weg te gooien
   int keuze,
       m, n;
-
+    infoblokje(); 
   do
   {
     cout << endl;
@@ -249,15 +255,13 @@ void hoofdmenu ()
       default: cout << endl;
                cout << "Voer een goede keuze in!" << endl;
     }
-
   } while (keuze!=3);
-
 }  // hoofdmenu
 
 //*************************************************************************
   
 int main ()
-{
+{ 
   hoofdmenu ();
 
   return 0;
