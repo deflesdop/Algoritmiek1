@@ -34,29 +34,45 @@ Stand::~Stand ()
 }  // ~Stand
 
 //*************************************************************************
-// return M
+
+
+/**
+Initialiseert het bord naar 0.
+**/
+void Stand::init_board(){
+	for(int i = 0; i < getM(); i++){
+		for(int j = 0; j < getN(); j++){
+			bord[i][j] = 0;
+		}
+	}
+}
+
+//*************************************************************************
+//Return M.
 int Stand::getM ()
 {
   return m;
 }
 
 //*************************************************************************
-// return N
+//Return N.
 int Stand::getN ()
 {
   return n;
 }
-// return zetnr
+//Return zetnr.
 int Stand::getZetnr ()
 {
   return zetnr;
 }
-// 
+
+//Verandert de waar van zetnr. 
 void Stand::setZetnr (int nr)
 {
   zetnr = nr;
 }
 
+//Incrementeert zetnr met 1.
 void Stand::incZetnr ()
 {
   zetnr++;
@@ -64,6 +80,7 @@ void Stand::incZetnr ()
 
 //*************************************************************************
 
+//Druk het bord af van grootte m bij n.
 void Stand::drukaf ()
 {
     for(int i = 0; i < getN(); i++){
@@ -88,6 +105,14 @@ void Stand::drukaf ()
 }  // drukaf
 
 //*************************************************************************
+//Returns true wanneer het mogelijk is om een steen op het bord te leggen
+//op een bepaalde positie gespecificeerd bij rij, kolom en steennr op een 
+//bepaalde stand bord[][].
+//PARAMS
+//int rij, index van de rij van het bord.
+//int kolom, index van de kolom van het bord.
+//int steennr, de rotatie van een steen.
+//int bord[][], de huidige stand van het bord.
 bool Stand::steenmogelijk(int rij, int kolom, int steennr, int bord[][Nmax])
 {
     switch(steennr){
@@ -123,6 +148,15 @@ bool Stand::steenmogelijk(int rij, int kolom, int steennr, int bord[][Nmax])
     return false;
 }
 
+/**
+Returns true wanneer een steen is geplaatst op een bord.
+PARAMS
+int rij, index van de rij van het bord.
+int kolom, index van de kolom van het bord.
+int steennr, de rotatie van een steen.
+int bord[][], de huidige stand van het bord.
+int zetnr, het nummer van de steen die wordt geplaatst.
+**/
 bool Stand::doeZet (int rij, int kolom, int steennr, int bord[][Nmax], int zetnr)
 {   
     if(steennr >= 0 && rij >=0 && kolom >= 0 && rij < getM()-1 && kolom < getN()-1 && steennr < 4 ){ 
@@ -158,6 +192,14 @@ bool Stand::doeZet (int rij, int kolom, int steennr, int bord[][Nmax], int zetnr
 	
 }  // legsteenneer
 
+/**
+Returns true wanneer een steen is geplaatst op een bord.
+PARAMS
+int rij, index van de rij van het bord.
+int kolom, index van de kolom van het bord.
+int steennr, de rotatie van een steen.
+int bord[][], de huidige stand van het bord.
+**/
 bool Stand::legsteenneer (int rij, int kolom, int steennr)
 {   
    return doeZet(rij, kolom, steennr, bord, getZetnr());
@@ -165,6 +207,11 @@ bool Stand::legsteenneer (int rij, int kolom, int steennr)
 }  // legsteenneer
 
 //*************************************************************************
+/**
+Returns true wanneer een bepaalde stand de eindstand is.
+PARAMS
+int stand[][], de huidige stand van het bord.
+**/
 bool Stand::huidigeEindstand (int stand[][Nmax])
 {
   for(int i = 0; i< getM()-1; i++){
@@ -180,7 +227,9 @@ bool Stand::huidigeEindstand (int stand[][Nmax])
 
 }  // eindstand
 
-
+/**
+Returns true wanneer de stand van het bord de eindstand is.
+**/
 bool Stand::eindstand ()
 {
   return huidigeEindstand(bord);
@@ -188,6 +237,12 @@ bool Stand::eindstand ()
 }  // eindstand
 
 //*************************************************************************
+/**
+Returns het aantal mogelijke zetten vanuit een gegeven stand.
+PARAMS
+int temp[][], een array waarin alle mogelijke zetten worden opgeslagen
+int stand[][], de huidige stand van het bord.
+**/
 int Stand::aantalmogelijkeZetten(int temp[][3], int stand[][Nmax]){
     int counter = 0;
     for(int i = 0; i< getM()-1; i++){
@@ -206,6 +261,9 @@ int Stand::aantalmogelijkeZetten(int temp[][3], int stand[][Nmax]){
   return counter;
 }
 
+/**
+Legt een steen neer op een random mogelijke lokatie.
+**/
 void Stand::doerandomzet ()
 {
   int mogelijkezet[1500][3];
@@ -217,10 +275,27 @@ void Stand::doerandomzet ()
 }  // doerandomzet
 
 //*************************************************************************
+/**
+Zet de waardes van een neergelegde steen weer op 0
+PARAMS
+int rij, index van de rij van het bord.
+int kolom, index van de kolom van het bord.
+int steennr, de rotatie van een steen.
+int bord[][], de huidige stand van het bord.
+**/
 void Stand::undoZet(int rij, int kolom, int steennr, int stand[][Nmax]){
 	doeZet(rij, kolom, steennr, bord, 0);
 }
 
+/**
+Returns true wanneer een huidige stand winnend is voor de speler.
+PARAMS
+int aantal, het aantal bekeken standen.
+int wrij, index van de rij van het bord die een winnend stand geeft.
+int wkolom, index van de kolom van het bord die een winnend stand geeft.
+int wsteennr, de rotatie van een steen die een winnend stand geeft.
+int stand[][], de huidige stand van het bord.
+**/
 bool Stand::win (int &aantal, int &wrij, int &wkolom, int &wsteennr, int stand[][Nmax])
 {
 	int mogelijkzet[1500][3];
@@ -246,6 +321,14 @@ bool Stand::win (int &aantal, int &wrij, int &wkolom, int &wsteennr, int stand[]
     }
 }  // winnend
 
+/**
+Returns true wanneer een huidige stand winnend is voor de speler.
+PARAMS
+int aantal, het aantal bekeken standen.
+int wrij, index van de rij van het bord die een winnend stand geeft.
+int wkolom, index van de kolom van het bord die een winnend stand geeft.
+int wsteennr, de rotatie van een steen die een winnend stand geeft.
+**/
 bool Stand::winnend (int &aantal, int &wrij, int &wkolom, int &wsteennr){
 	int zetnr = getZetnr();
 	bool winnend = win(aantal, wrij, wkolom, wsteennr, bord);
@@ -255,7 +338,13 @@ bool Stand::winnend (int &aantal, int &wrij, int &wkolom, int &wsteennr){
 
 
 //*************************************************************************
-
+/**
+Returns Telt het totale aantal standen waarin de speler wint of verliest.
+PARAMS
+float totaal, het totaal aantal standen waarin een spel is afgelopen.
+float gewonnen, het totaal aantal gewonnen standen.
+bool aanzet, true als speler aan de beurt is.
+**/
 void Stand::telwinnend(float & totaal, float & gewonnen, bool aanzet){
 	
 	int mogelijkzet[1500][3];
@@ -277,9 +366,15 @@ void Stand::telwinnend(float & totaal, float & gewonnen, bool aanzet){
 	}
 }
 
-
-
-
+/**
+Bepaalt de goede zet als een winnende zet niet bestaat
+De goede zet heeft het hoogste kans tot het
+leiden naar een winnende zet.
+PARAMS
+int grij, de index van een rij van een goede zet
+int gkolom, de index van een kolom van een goede zet 
+int gsteennr, de rotatie van een steen an een goede zet
+**/
 bool Stand::goedezet(int &grij, int &gkolom, int &gsteennr)
 {	float totaal, gewonnen;
 	int zetnum = getZetnr();
@@ -313,7 +408,17 @@ bool Stand::goedezet(int &grij, int &gkolom, int &gsteennr)
 }  // goedezetint
 
 
-
+/**
+Bepaalt de goede zet als een winnende zet niet bestaat
+De goede zet heeft het hoogste kans tot het
+leiden naar een winnende zet.
+PARAMS
+int grij, de index van een rij van een goede zet
+int gkolom, de index van een kolom van een goede zet 
+int gsteennr, de rotatie van een steen an een goede zet
+float hoogste, de kans dat de positie van de steen leidt tot 
+een winnende stand. 
+**/
 void Stand::goedezetEX(int &grij, int &gkolom, int &gsteennr, float &hoogste){
 	float totaal, gewonnen;
 	int zetnum = getZetnr();
@@ -343,14 +448,3 @@ void Stand::goedezetEX(int &grij, int &gkolom, int &gsteennr, float &hoogste){
 		}
 		setZetnr(zetnum);
 }
-
-void Stand::init_board(){
-	for(int i = 0; i < getM(); i++){
-		for(int j = 0; j < getN(); j++){
-			bord[i][j] = 0;
-		}
-	}
-
-
-}
-
