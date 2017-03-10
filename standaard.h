@@ -1,3 +1,6 @@
+// Andrew Huang (s1913999)
+// Micha de Jong (s1821784)
+// 10-03-2017
 // Defintie van standaard functies.
 
 #ifndef StandaardHVar  // om te voorkomen dat dit .h bestand meerdere keren
