@@ -206,6 +206,8 @@ void doeexperimenten (Stand *s1)
 	  }
 		if(m==5){break;}
   }
+}
+
 void infoblokje(){
     cout << "--------------------------------------------------------"<< endl;
     cout << "Andrew Huang(s1913999) & Micha de Jong(s1821784)." << endl;
@@ -214,7 +216,6 @@ void infoblokje(){
     cout << "Ook kan je diverse experimenten uitvoeren." << endl;
     cout << "--------------------------------------------------------"<< endl;
   }  
-}  // doeexperimenten
 
 //*************************************************************************
 
